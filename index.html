@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kotlin Notes — Hindi Examples ke Saath</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --bg2: #16161d;
+    --bg3: #1c1c26;
+    --bg4: #22222f;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8e8f0;
+    --text2: #9898b0;
+    --text3: #6060780;
+    --purple: #9b8bff;
+    --purple-bg: rgba(155,139,255,0.1);
+    --purple-border: rgba(155,139,255,0.25);
+    --green: #4ade80;
+    --green-bg: rgba(74,222,128,0.08);
+    --green-border: rgba(74,222,128,0.2);
+    --amber: #fbbf24;
+    --amber-bg: rgba(251,191,36,0.08);
+    --amber-border: rgba(251,191,36,0.2);
+    --blue: #60a5fa;
+    --blue-bg: rgba(96,165,250,0.08);
+    --blue-border: rgba(96,165,250,0.2);
+    --coral: #f87171;
+    --coral-bg: rgba(248,113,113,0.08);
+    --coral-border: rgba(248,113,113,0.2);
+    --teal: #2dd4bf;
+    --teal-bg: rgba(45,212,191,0.08);
+    --teal-border: rgba(45,212,191,0.2);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* SIDEBAR */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-logo .kt {
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 2px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+  }
+
+  .sidebar-nav { padding: 12px 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text2);
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+  .nav-item.active {
+    background: var(--purple-bg);
+    color: var(--purple);
+    border-left-color: var(--purple);
+  }
+
+  .nav-item .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    min-width: 18px;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    margin-left: 260px;
+    flex: 1;
+    max-width: 900px;
+    padding: 48px 48px 80px;
+  }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--purple);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--text2);
+    font-family: 'Noto Sans Devanagari', sans-serif;
+  }
+
+  /* TOPIC CARD */
+  .topic {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .topic-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topic-title .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--purple);
+    flex-shrink: 0;
+  }
+
+  .topic-desc {
+    font-size: 13.5px;
+    color: var(--text2);
+    margin-bottom: 14px;
+    line-height: 1.75;
+  }
+
+  /* BOXES */
+  .box {
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .box-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .box-label::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+  }
+
+  .box-why {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    color: #86efac;
+  }
+  .box-why .box-label { color: var(--green); }
+  .box-why .box-label::before { background: var(--green); }
+
+  .box-hindi {
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-border);
+    color: #fde68a;
+  }
+  .box-hindi .box-label { color: var(--amber); }
+  .box-hindi .box-label::before { background: var(--amber); }
+  .box-hindi .devanagari { font-family: 'Noto Sans Devanagari', sans-serif; }
+
+  .box-internal {
+    background: var(--blue-bg);
+    border: 1px solid var(--blue-border);
+    color: #bfdbfe;
+  }
+  .box-internal .box-label { color: var(--blue); }
+  .box-internal .box-label::before { background: var(--blue); }
+
+  .box-warn {
+    background: var(--coral-bg);
+    border: 1px solid var(--coral-border);
+    color: #fca5a5;
+  }
+  .box-warn .box-label { color: var(--coral); }
+  .box-warn .box-label::before { background: var(--coral); }
+
+  .box-tip {
+    background: var(--teal-bg);
+    border: 1px solid var(--teal-border);
+    color: #99f6e4;
+  }
+  .box-tip .box-label { color: var(--teal); }
+  .box-tip .box-label::before { background: var(--teal); }
+
+  /* CODE BLOCK */
+  pre {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 12px 0;
+    white-space: pre;
+  }
+
+  .kw { color: #c792ea; }       /* keywords */
+  .fn { color: #82aaff; }       /* function names */
+  .str { color: #c3e88d; }      /* strings */
+  .num { color: #f78c6c; }      /* numbers */
+  .cmt { color: #546e7a; font-style: italic; } /* comments */
+  .type { color: #ffcb6b; }     /* types */
+  .op { color: #89ddff; }       /* operators */
+  .var { color: #eeffff; }      /* variables */
+  .ann { color: #c792ea; }      /* annotations */
+  .err { color: #f07178; text-decoration: underline wavy #f07178; } /* error */
+  .ok { color: var(--green); }  /* success */
+
+  /* SUBTOPIC heading */
+  .subtopic {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--purple);
+    margin: 22px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subtopic::before {
+    content: '▸';
+    font-size: 10px;
+    opacity: 0.7;
+  }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 12px 0;
+  }
+  th {
+    background: var(--bg4);
+    color: var(--text2);
+    font-weight: 500;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg3); }
+  table { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+  td.desc-cell { font-family: 'Sora', sans-serif; font-size: 12.5px; color: var(--text2); }
+
+  /* COMPARISON GRID */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .compare-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+  }
+  .compare-card h4 {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .compare-card.good { border-color: var(--green-border); }
+  .compare-card.good h4 { color: var(--green); }
+  .compare-card.bad { border-color: var(--coral-border); }
+  .compare-card.bad h4 { color: var(--coral); }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.3px;
+  }
+  .badge-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+  .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .badge-coral { background: var(--coral-bg); color: var(--coral); border: 1px solid var(--coral-border); }
+
+  /* SCOPE FUNCTION TABLE */
+  .scope-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12.5px; }
+  .scope-table th { background: var(--bg4); color: var(--text2); font-weight: 500; padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .scope-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .scope-table tr:last-child td { border-bottom: none; }
+  .scope-table { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+  .scope-table td:first-child { font-family: 'JetBrains Mono', monospace; color: var(--purple); font-weight: 600; }
+  .scope-table td:nth-child(2) { color: var(--teal); font-size: 11px; }
+  .scope-table td:nth-child(3) { color: var(--amber); font-size: 11px; }
+  .scope-table td:nth-child(4) { color: var(--text2); font-size: 12px; }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .sidebar { width: 100%; height: auto; position: relative; min-height: unset; }
+    .sidebar-nav { display: flex; flex-wrap: wrap; padding: 8px; }
+    .nav-item { padding: 6px 10px; border-left: none; border-bottom: 2px solid transparent; font-size: 12px; }
+    .nav-item.active { border-bottom-color: var(--purple); border-left: none; }
+    .layout { flex-direction: column; }
+    .main { margin-left: 0; padding: 24px 20px 60px; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="kt">Kotlin Notes</div>
+    <p>हाथ के नोट्स — Hindi Examples के साथ</p>
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" onclick="show('s1',this)" href="#">
+      <span class="num">01</span> Variables
+    </a>
+    <a class="nav-item" onclick="show('s2',this)" href="#">
+      <span class="num">02</span> Data Types
+    </a>
+    <a class="nav-item" onclick="show('s3',this)" href="#">
+      <span class="num">03</span> Functions
+    </a>
+    <a class="nav-item" onclick="show('s4',this)" href="#">
+      <span class="num">04</span> Null Safety
+    </a>
+    <a class="nav-item" onclick="show('s5',this)" href="#">
+      <span class="num">05</span> Classes
+    </a>
+    <a class="nav-item" onclick="show('s6',this)" href="#">
+      <span class="num">06</span> Collections
+    </a>
+    <a class="nav-item" onclick="show('s7',this)" href="#">
+      <span class="num">07</span> Control Flow
+    </a>
+    <a class="nav-item" onclick="show('s8',this)" href="#">
+      <span class="num">08</span> Lambdas
+    </a>
+    <a class="nav-item" onclick="show('s9',this)" href="#">
+      <span class="num">09</span> Scope Functions
+    </a>
+    <a class="nav-item" onclick="show('s10',this)" href="#">
+      <span class="num">10</span> Coroutines
+    </a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ========== SECTION 1: VARIABLES ========== -->
+<div id="s1" class="section active">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 01</div>
+    <div class="section-title">Variables</div>
+    <div class="section-subtitle">Data ko naam dena — val aur var ka fark</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>val — Permanent Value</div>
+    <div class="topic-desc">
+      <span class="badge badge-purple">Immutable</span>&nbsp;
+      <code>val</code> se banaya variable <b>change nahi ho sakta</b>. Ek baar value assign karo, hamesha ke liye wahi rahegi.
+    </div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Jaise Aadhaar card number — ek baar assign hua, zindagi bhar nahi badlega. Ya date of birth — fix hai, kabhi change nahi hogi.</span>
+    </div>
+<pre>
+<span class="kw">val</span> <span class="var">aadharNumber</span> = <span class="str">"1234-5678-9012"</span>    <span class="cmt">// ek baar set, hamesha same</span>
+<span class="kw">val</span> <span class="var">dateOfBirth</span>  = <span class="str">"15-Aug-1998"</span>
+<span class="kw">val</span> <span class="var">pi</span>           = <span class="num">3.14159</span>
+
+<span class="var">aadharNumber</span> = <span class="str">"9999"</span>  <span class="err">// ERROR ✗ — Val cannot be reassigned</span>
+</pre>
+    <div class="box box-why">
+      <div class="box-label">Kyu Chahiye?</div>
+      Accidental changes se protect karta hai. Code mein intent clear hoti hai — "yeh value change nahi honi chahiye." Thread-safe bhi hai. Jab doubt ho, pehle <code>val</code> try karo.
+    </div>
+    <div class="box box-internal">
+      <div class="box-label">Andar Kya Hota Hai?</div>
+      <code>val</code> = Java ka <code>final</code> keyword. JVM stack ya heap pe store hoti hai, lekin reference lock ho jaata hai. Compiler compile-time pe hi error de deta hai agar reassign karo.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>var — Variable Value</div>
+    <div class="topic-desc">
+      <span class="badge badge-amber">Mutable</span>&nbsp;
+      <code>var</code> se banaya variable <b>change ho sakta hai</b>. Jab value update karni ho tab use karo.
+    </div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Jaise bank balance — aaj 5000, kal 10000, parso 0. Ya game ka score — har action ke baad update hota rehta hai.</span>
+    </div>
+<pre>
+<span class="kw">var</span> <span class="var">bankBalance</span> = <span class="num">50000</span>
+<span class="var">bankBalance</span> = <span class="num">60000</span>    <span class="ok">// OK ✓</span>
+<span class="var">bankBalance</span> <span class="op">+=</span> <span class="num">5000</span>   <span class="ok">// OK ✓ — now 65000</span>
+
+<span class="kw">var</span> <span class="var">gameScore</span> = <span class="num">0</span>
+<span class="var">gameScore</span>++              <span class="ok">// OK ✓</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Type Inference — Kotlin Khud Samajhta Hai</div>
+    <div class="topic-desc">Kotlin compiler value dekh ke khud type samajh leta hai. Explicitly likhna optional hai.</div>
+<pre>
+<span class="kw">val</span> <span class="var">name</span>    = <span class="str">"Rahul"</span>      <span class="cmt">// String — compiler ne khud jaana</span>
+<span class="kw">val</span> <span class="var">age</span>     = <span class="num">25</span>          <span class="cmt">// Int</span>
+<span class="kw">val</span> <span class="var">price</span>  = <span class="num">99.5</span>        <span class="cmt">// Double</span>
+<span class="kw">val</span> <span class="var">active</span> = <span class="kw">true</span>        <span class="cmt">// Boolean</span>
+
+<span class="cmt">// Explicitly type likhna — dono sahi hain:</span>
+<span class="kw">val</span> <span class="var">city</span>: <span class="type">String</span> = <span class="str">"Delhi"</span>
+<span class="kw">var</span> <span class="var">count</span>: <span class="type">Int</span>    = <span class="num">0</span>
+</pre>
+    <div class="box box-why">
+      <div class="box-label">Kyu Zaruri?</div>
+      Java mein har baar likhna padta tha: <code>String name = "Rahul"</code>. Kotlin mein compiler itna smart hai ki type khud deduce kar le. Code shorter, readable, aur kam error-prone.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Lazy Initialization — Baad Mein Banao</div>
+    <div class="topic-desc"><code>by lazy</code> = value tabhi banao jab pehli baar use ho. Costly operations ke liye perfect.</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Jaise ghar mein RO water purifier — tab on hota hai jab pani nikalna ho, hamesha on nahi rehta. Resources bachao.</span>
+    </div>
+<pre>
+<span class="kw">val</span> <span class="var">heavyData</span>: <span class="type">List</span>&lt;<span class="type">String</span>&gt; <span class="kw">by</span> <span class="fn">lazy</span> {
+    <span class="fn">println</span>(<span class="str">"Abhi data load ho raha hai..."</span>)
+    <span class="fn">fetchFromDatabase</span>()   <span class="cmt">// costly operation</span>
+}
+
+<span class="cmt">// Yahan tak heavyData nahi bana</span>
+<span class="fn">println</span>(<span class="str">"Program shuru hua"</span>)
+
+<span class="cmt">// Ab pehli baar use kiya — tabhi banata hai</span>
+<span class="fn">println</span>(<span class="var">heavyData</span>.<span class="fn">size</span>)   <span class="cmt">// "Abhi data load ho raha hai..." print hoga</span>
+</pre>
+    <div class="box box-internal">
+      <div class="box-label">Andar Kya Hota Hai?</div>
+      <code>by lazy</code> ek delegate pattern hai. Internally ek <code>SynchronizedLazyImpl</code> object banta hai jo pehli access pe lambda run karta hai, result cache karta hai. Thread-safe by default.
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 2: DATA TYPES ========== -->
+<div id="s2" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 02</div>
+    <div class="section-title">Data Types</div>
+    <div class="section-subtitle">Har data ka ek khaandaan — Number, Text, True/False</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Basic Types — Poora Overview</div>
+    <table>
+      <tr><th>Type</th><th>Size</th><th>Example</th><th>Hindi Use</th></tr>
+      <tr><td>Int</td><td>32-bit</td><td><code>val age = 25</code></td><td class="desc-cell">Umar, marks, count</td></tr>
+      <tr><td>Long</td><td>64-bit</td><td><code>val phone = 9876543210L</code></td><td class="desc-cell">Phone number, big IDs</td></tr>
+      <tr><td>Double</td><td>64-bit</td><td><code>val price = 99.5</code></td><td class="desc-cell">Price, percentage</td></tr>
+      <tr><td>Float</td><td>32-bit</td><td><code>val temp = 36.6f</code></td><td class="desc-cell">Temperature, GPS coords</td></tr>
+      <tr><td>Boolean</td><td>1-bit</td><td><code>val isPassed = true</code></td><td class="desc-cell">Haan/Naa decisions</td></tr>
+      <tr><td>Char</td><td>16-bit</td><td><code>val grade = 'A'</code></td><td class="desc-cell">Single letter/symbol</td></tr>
+      <tr><td>String</td><td>Variable</td><td><code>val name = "Priya"</code></td><td class="desc-cell">Naam, address, text</td></tr>
+      <tr><td>Byte</td><td>8-bit</td><td><code>val b: Byte = 127</code></td><td class="desc-cell">File data, streams</td></tr>
+    </table>
+    <div class="box box-internal">
+      <div class="box-label">Andar Kya Hota Hai?</div>
+      Java unlike, Kotlin mein <code>Int</code>, <code>Double</code> sab objects hain — primitive types nahi. But Kotlin compiler smart hai: jab performance chahiye, automatically Java primitive (<code>int</code>, <code>double</code>) mein convert kar deta hai. Tume kuch nahi karna.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>String Templates — Text Mein Variable Dalna</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Socho tum WhatsApp pe message likhte ho: "Bhai [naam], tera bill [amount] rupees hai." <code>$</code> lagao aur directly variable paste ho jaata hai.</span>
+    </div>
+<pre>
+<span class="kw">val</span> <span class="var">name</span>  = <span class="str">"Amit"</span>
+<span class="kw">val</span> <span class="var">marks</span> = <span class="num">95</span>
+<span class="kw">val</span> <span class="var">fee</span>   = <span class="num">15000.50</span>
+
+<span class="cmt">// OLD Java style — bura, confusing:</span>
+<span class="fn">println</span>(<span class="str">"Student "</span> <span class="op">+</span> <span class="var">name</span> <span class="op">+</span> <span class="str">" ne "</span> <span class="op">+</span> <span class="var">marks</span> <span class="op">+</span> <span class="str">" marks liye"</span>)
+
+<span class="cmt">// Kotlin style — saaf, seedha:</span>
+<span class="fn">println</span>(<span class="str">"Student <span class="op">$name</span> ne <span class="op">$marks</span> marks liye"</span>)
+
+<span class="cmt">// Expression chahiye to curly brace:</span>
+<span class="fn">println</span>(<span class="str">"Pass hua: <span class="op">${marks > 33}</span>"</span>)
+<span class="fn">println</span>(<span class="str">"Fee: ₹<span class="op">${String.format("%.2f", fee)}</span>"</span>)
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Type Conversion — Ek type se doosre mein</div>
+    <div class="topic-desc">Kotlin mein implicit conversion nahi hoti — explicitly convert karna padta hai.</div>
+<pre>
+<span class="kw">val</span> <span class="var">num</span>: <span class="type">Int</span> = <span class="num">42</span>
+
+<span class="cmt">// Int → Double, String, Long etc.</span>
+<span class="kw">val</span> <span class="var">d</span>: <span class="type">Double</span> = <span class="var">num</span>.<span class="fn">toDouble</span>()
+<span class="kw">val</span> <span class="var">s</span>: <span class="type">String</span> = <span class="var">num</span>.<span class="fn">toString</span>()
+<span class="kw">val</span> <span class="var">l</span>: <span class="type">Long</span>   = <span class="var">num</span>.<span class="fn">toLong</span>()
+
+<span class="cmt">// String → Int (careful — crash if invalid!)</span>
+<span class="kw">val</span> <span class="var">age</span>  = <span class="str">"25"</span>.<span class="fn">toInt</span>()
+<span class="kw">val</span> <span class="var">safe</span> = <span class="str">"abc"</span>.<span class="fn">toIntOrNull</span>() <span class="cmt">// null — crash nahi hoga</span>
+
+<span class="cmt">// Java jaisi automatic conversion NAHI hoti:</span>
+<span class="kw">val</span> <span class="var">x</span>: <span class="type">Int</span>    = <span class="num">5</span>
+<span class="kw">val</span> <span class="var">y</span>: <span class="type">Long</span>   = <span class="var">x</span>      <span class="err">// ERROR ✗ — explicit karo</span>
+<span class="kw">val</span> <span class="var">y</span>: <span class="type">Long</span>   = <span class="var">x</span>.<span class="fn">toLong</span>()  <span class="ok">// OK ✓</span>
+</pre>
+    <div class="box box-why">
+      <div class="box-label">Kyu Explicit Conversion?</div>
+      Java mein <code>int</code> automatically <code>long</code> ban jaata tha — silently data lose hota tha. Kotlin mein tum consciously convert karte ho — bugs kam.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Any, Unit, Nothing — Special Types</div>
+<pre>
+<span class="cmt">// Any — Kotlin ka Object (sabka baap)</span>
+<span class="kw">val</span> <span class="var">anything</span>: <span class="type">Any</span> = <span class="str">"Hello"</span>
+<span class="kw">val</span> <span class="var">anything2</span>: <span class="type">Any</span> = <span class="num">42</span>
+
+<span class="cmt">// Unit — function kuch return nahi karta (Java ka void)</span>
+<span class="kw">fun</span> <span class="fn">greet</span>(): <span class="type">Unit</span> {
+    <span class="fn">println</span>(<span class="str">"Namaste!"</span>)
+}  <span class="cmt">// ': Unit' likhna optional hai</span>
+
+<span class="cmt">// Nothing — function kabhi return nahi karta (throws/infinite loop)</span>
+<span class="kw">fun</span> <span class="fn">error</span>(<span class="var">msg</span>: <span class="type">String</span>): <span class="type">Nothing</span> {
+    <span class="kw">throw</span> <span class="type">IllegalStateException</span>(<span class="var">msg</span>)
+}
+</pre>
+  </div>
+</div>
+
+<!-- ========== SECTION 3: FUNCTIONS ========== -->
+<div id="s3" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 03</div>
+    <div class="section-title">Functions</div>
+    <div class="section-subtitle">Kaam ka dabba — baar baar use karo</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Basic Function</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Chai banane ki recipe — ek baar likhi, jab bhi chahiye call karo. Input: cups, paani. Output: ready chai.</span>
+    </div>
+<pre>
+<span class="cmt">// fun keyword — functionName(params): ReturnType</span>
+<span class="kw">fun</span> <span class="fn">chaiBanao</span>(<span class="var">cups</span>: <span class="type">Int</span>, <span class="var">sugar</span>: <span class="type">Boolean</span> = <span class="kw">true</span>): <span class="type">String</span> {
+    <span class="kw">val</span> <span class="var">sweetness</span> = <span class="kw">if</span> (<span class="var">sugar</span>) <span class="str">"meethi"</span> <span class="kw">else</span> <span class="str">"phiki"</span>
+    <span class="kw">return</span> <span class="str">"$cups cup $sweetness chai ready!"</span>
+}
+
+<span class="fn">chaiBanao</span>(<span class="num">2</span>)              <span class="cmt">// "2 cup meethi chai ready!"</span>
+<span class="fn">chaiBanao</span>(<span class="num">1</span>, <span class="kw">false</span>)       <span class="cmt">// "1 cup phiki chai ready!"</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Expression Body — Single Line Functions</div>
+    <div class="topic-desc">Jab function sirf ek value return kare — curly braces aur return hatao.</div>
+<pre>
+<span class="cmt">// Verbose style:</span>
+<span class="kw">fun</span> <span class="fn">double</span>(<span class="var">n</span>: <span class="type">Int</span>): <span class="type">Int</span> {
+    <span class="kw">return</span> <span class="var">n</span> <span class="op">*</span> <span class="num">2</span>
+}
+
+<span class="cmt">// Expression body — same kaam, 1 line:</span>
+<span class="kw">fun</span> <span class="fn">double</span>(<span class="var">n</span>: <span class="type">Int</span>) = <span class="var">n</span> <span class="op">*</span> <span class="num">2</span>
+
+<span class="kw">fun</span> <span class="fn">isAdult</span>(<span class="var">age</span>: <span class="type">Int</span>) = <span class="var">age</span> <span class="op">>=</span> <span class="num">18</span>
+<span class="kw">fun</span> <span class="fn">fullName</span>(<span class="var">first</span>: <span class="type">String</span>, <span class="var">last</span>: <span class="type">String</span>) = <span class="str">"$first $last"</span>
+<span class="kw">fun</span> <span class="fn">max</span>(<span class="var">a</span>: <span class="type">Int</span>, <span class="var">b</span>: <span class="type">Int</span>) = <span class="kw">if</span> (<span class="var">a</span> <span class="op">></span> <span class="var">b</span>) <span class="var">a</span> <span class="kw">else</span> <span class="var">b</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Default Parameters + Named Arguments</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Pizza order karte waqt — "medium size, cheese extra, no olives." Har baar sab nahi bolna padta — jo default chahiye woh assume ho jaata hai.</span>
+    </div>
+<pre>
+<span class="kw">fun</span> <span class="fn">pizzaOrder</span>(
+    <span class="var">size</span>   : <span class="type">String</span>  = <span class="str">"medium"</span>,
+    <span class="var">cheese</span> : <span class="type">Boolean</span> = <span class="kw">true</span>,
+    <span class="var">olives</span> : <span class="type">Boolean</span> = <span class="kw">false</span>,
+    <span class="var">qty</span>    : <span class="type">Int</span>     = <span class="num">1</span>
+) {
+    <span class="fn">println</span>(<span class="str">"$qty x $size pizza, cheese=$cheese, olives=$olives"</span>)
+}
+
+<span class="fn">pizzaOrder</span>()                             <span class="cmt">// sab default</span>
+<span class="fn">pizzaOrder</span>(<span class="str">"large"</span>)                      <span class="cmt">// sirf size change</span>
+<span class="fn">pizzaOrder</span>(<span class="var">qty</span> = <span class="num">3</span>, <span class="var">olives</span> = <span class="kw">true</span>)    <span class="cmt">// named — order matter nahi</span>
+<span class="fn">pizzaOrder</span>(<span class="var">size</span> = <span class="str">"small"</span>, <span class="var">cheese</span> = <span class="kw">false</span>) <span class="cmt">// ekdum clear</span>
+</pre>
+    <div class="box box-why">
+      <div class="box-label">Kyu Important?</div>
+      Java mein default values ke liye multiple overloaded methods likhne padte the. Kotlin mein ek function, sab handle. Named arguments se 5-6 parameter wale functions bhi readable rehte hain.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Extension Functions — Purani class mein naye kaam</div>
+    <div class="topic-desc">Kisi bhi class mein — apni ya library ki — naya function add kar sakte ho bina usse inherit kiye.</div>
+<pre>
+<span class="cmt">// String class mein naya function add kar rahe hain</span>
+<span class="kw">fun</span> <span class="type">String</span>.<span class="fn">isPanCard</span>(): <span class="type">Boolean</span> {
+    <span class="kw">return</span> <span class="kw">this</span>.<span class="fn">matches</span>(<span class="str">"[A-Z]{5}[0-9]{4}[A-Z]{1}"</span>.<span class="fn">toRegex</span>())
+}
+
+<span class="kw">fun</span> <span class="type">Int</span>.<span class="fn">rupees</span>() = <span class="str">"₹$this"</span>
+
+<span class="cmt">// Ab String objects pe seedha call kar sakte ho:</span>
+<span class="fn">println</span>(<span class="str">"ABCDE1234F"</span>.<span class="fn">isPanCard</span>())  <span class="cmt">// true</span>
+<span class="fn">println</span>(<span class="str">"HELLO"</span>.<span class="fn">isPanCard</span>())       <span class="cmt">// false</span>
+<span class="fn">println</span>(<span class="num">5000</span>.<span class="fn">rupees</span>())            <span class="cmt">// ₹5000</span>
+</pre>
+    <div class="box box-internal">
+      <div class="box-label">Andar Kya Hota Hai?</div>
+      Extension functions bytecode mein static methods ban jaati hain. <code>this</code> = receiver object. Class ka structure nahi badalta — sirf ek illusion hai. Android SDK mein yeh bahut use hoti hain.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>vararg — Kitne bhi arguments</div>
+<pre>
+<span class="kw">fun</span> <span class="fn">totalMarks</span>(<span class="kw">vararg</span> <span class="var">marks</span>: <span class="type">Int</span>): <span class="type">Int</span> {
+    <span class="kw">return</span> <span class="var">marks</span>.<span class="fn">sum</span>()
+}
+
+<span class="fn">totalMarks</span>(<span class="num">80</span>, <span class="num">90</span>)                <span class="cmt">// 170</span>
+<span class="fn">totalMarks</span>(<span class="num">70</span>, <span class="num">85</span>, <span class="num">92</span>, <span class="num">78</span>)       <span class="cmt">// 325</span>
+
+<span class="cmt">// Array already hai? Spread operator * use karo:</span>
+<span class="kw">val</span> <span class="var">scores</span> = <span class="fn">intArrayOf</span>(<span class="num">85</span>, <span class="num">90</span>, <span class="num">95</span>)
+<span class="fn">totalMarks</span>(<span class="op">*</span><span class="var">scores</span>)               <span class="cmt">// 270</span>
+</pre>
+  </div>
+</div>
+
+<!-- ========== SECTION 4: NULL SAFETY ========== -->
+<div id="s4" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 04</div>
+    <div class="section-title">Null Safety</div>
+    <div class="section-subtitle">NullPointerException — Kotlin ka sabse bada gift</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Problem — Null kya hai?</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Socho tumne kisi ka naam variable mein store kiya, lekin unhone bataya hi nahi. Woh value "null" hai — khali haath. Jab tum us khali haath se kuch kaam karne ki koshish karo — <b>crash!</b></span>
+    </div>
+<pre>
+<span class="cmt">// Java mein yeh valid tha — aur yahi problem thi:</span>
+<span class="type">String</span> <span class="var">name</span> = <span class="kw">null</span>;
+<span class="var">name</span>.<span class="fn">length</span>();   <span class="err">// NullPointerException — app crash</span>
+
+<span class="cmt">// Kotlin mein default mein null allowed hi nahi:</span>
+<span class="kw">var</span> <span class="var">name</span>: <span class="type">String</span> = <span class="kw">null</span>   <span class="err">// ERROR — compile time pe hi!</span>
+</pre>
+    <div class="box box-why">
+      <div class="box-label">Kyu Important?</div>
+      Billion-dollar mistake — Tony Hoare (null ke inventor) ne khud kaha yeh unki sabse badi galti thi. Android apps mein NPE sabse common crash reason tha. Kotlin ne compile-time pe hi band kar diya.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Nullable Types — ? lagao</div>
+<pre>
+<span class="cmt">// Non-nullable — value JARUR hogi:</span>
+<span class="kw">var</span> <span class="var">name</span>: <span class="type">String</span>  = <span class="str">"Rahul"</span>
+<span class="var">name</span> = <span class="kw">null</span>              <span class="err">// ERROR ✗</span>
+
+<span class="cmt">// Nullable — ? lagao, null ho sakta hai:</span>
+<span class="kw">var</span> <span class="var">nickname</span>: <span class="type">String</span><span class="op">?</span> = <span class="kw">null</span>
+<span class="var">nickname</span> = <span class="str">"Rocky"</span>        <span class="ok">// OK ✓</span>
+<span class="var">nickname</span> = <span class="kw">null</span>           <span class="ok">// OK ✓</span>
+
+<span class="cmt">// Common nullable cases:</span>
+<span class="kw">var</span> <span class="var">middleName</span>: <span class="type">String</span><span class="op">?</span> = <span class="kw">null</span>   <span class="cmt">// not everyone has it</span>
+<span class="kw">var</span> <span class="var">profilePic</span>: <span class="type">String</span><span class="op">?</span> = <span class="kw">null</span>   <span class="cmt">// might not be set</span>
+<span class="kw">var</span> <span class="var">lastLogin</span> : <span class="type">Long</span><span class="op">?</span>   = <span class="kw">null</span>   <span class="cmt">// new user hasn't logged in</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Safe Call Operator — ?.</div>
+    <div class="topic-desc">Nullable variable pe safely kaam karo. Agar null hai → null return karo, crash nahi.</div>
+<pre>
+<span class="kw">val</span> <span class="var">nickname</span>: <span class="type">String</span><span class="op">?</span> = <span class="kw">null</span>
+
+<span class="cmt">// Bina safe call — crash:</span>
+<span class="fn">println</span>(<span class="var">nickname</span>.<span class="fn">length</span>)    <span class="err">// ERROR — compiler rok dega</span>
+
+<span class="cmt">// Safe call — null hai toh null return karo:</span>
+<span class="fn">println</span>(<span class="var">nickname</span><span class="op">?.</span><span class="fn">length</span>)   <span class="cmt">// prints: null (no crash)</span>
+
+<span class="cmt">// Chain karo:</span>
+<span class="kw">val</span> <span class="var">user</span>: <span class="type">User</span><span class="op">?</span> = <span class="fn">getUser</span>()
+<span class="kw">val</span> <span class="var">city</span> = <span class="var">user</span><span class="op">?.</span><span class="var">address</span><span class="op">?.</span><span class="var">city</span>  <span class="cmt">// null agar koi bhi null ho</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Elvis Operator — ?:</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">"Agar naam hai toh woh dikhao, nahi hai toh 'Guest' dikhao." — Yahi Elvis operator karta hai. Null ho toh fallback value do.</span>
+    </div>
+<pre>
+<span class="kw">val</span> <span class="var">nickname</span>: <span class="type">String</span><span class="op">?</span> = <span class="kw">null</span>
+
+<span class="cmt">// Long way:</span>
+<span class="kw">val</span> <span class="var">display</span> = <span class="kw">if</span> (<span class="var">nickname</span> <span class="op">!=</span> <span class="kw">null</span>) <span class="var">nickname</span> <span class="kw">else</span> <span class="str">"Guest"</span>
+
+<span class="cmt">// Elvis way — same kaam:</span>
+<span class="kw">val</span> <span class="var">display</span> = <span class="var">nickname</span> <span class="op">?:</span> <span class="str">"Guest"</span>
+
+<span class="cmt">// Return ya throw bhi kar sakte ho:</span>
+<span class="kw">fun</span> <span class="fn">getUser</span>(<span class="var">id</span>: <span class="type">Int</span>): <span class="type">User</span> {
+    <span class="kw">return</span> <span class="fn">findUser</span>(<span class="var">id</span>) <span class="op">?:</span> <span class="kw">throw</span> <span class="type">Exception</span>(<span class="str">"User $id not found"</span>)
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>let + null check — Most Common Pattern</div>
+<pre>
+<span class="kw">val</span> <span class="var">email</span>: <span class="type">String</span><span class="op">?</span> = <span class="fn">getUserEmail</span>()
+
+<span class="cmt">// Sirf tab run karo jab email null nahi:</span>
+<span class="var">email</span><span class="op">?.</span><span class="fn">let</span> { <span class="var">e</span> <span class="op">-></span>
+    <span class="fn">sendWelcomeEmail</span>(<span class="var">e</span>)
+    <span class="fn">println</span>(<span class="str">"Email bheja: $e"</span>)
+}
+
+<span class="cmt">// if-else ke saath:</span>
+<span class="var">email</span><span class="op">?.</span><span class="fn">let</span> {
+    <span class="fn">println</span>(<span class="str">"Email: $it"</span>)
+} <span class="op">?:</span> <span class="fn">println</span>(<span class="str">"Email nahi diya"</span>)
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>!! Operator — Danger Zone</div>
+    <div class="box box-warn">
+      <div class="box-label">Warning</div>
+      <code>!!</code> matlab: "Main guarantee de raha hoon yeh null nahi hai." Agar null nikla — NPE crash. Use karo sirf jab 100% sure ho.
+    </div>
+<pre>
+<span class="kw">val</span> <span class="var">name</span>: <span class="type">String</span><span class="op">?</span> = <span class="fn">getName</span>()
+
+<span class="cmt">// Risky — crash if null:</span>
+<span class="fn">println</span>(<span class="var">name</span><span class="op">!!</span>.<span class="fn">length</span>)
+
+<span class="cmt">// Prefer safe patterns:</span>
+<span class="fn">println</span>(<span class="var">name</span><span class="op">?.</span><span class="fn">length</span> <span class="op">?:</span> <span class="num">0</span>)  <span class="cmt">// better</span>
+</pre>
+  </div>
+</div>
+
+<!-- ========== SECTION 5: CLASSES ========== -->
+<div id="s5" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 05</div>
+    <div class="section-title">Classes</div>
+    <div class="section-subtitle">Blueprint banana — Objects ka khaandaan</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Basic Class</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Class = ghar ka naksha. Naksha ek hi, ghar hazaar bana sakte ho. Har ghar ka apna address (properties) aur apna kaam (functions).</span>
+    </div>
+<pre>
+<span class="kw">class</span> <span class="type">Student</span>(<span class="kw">val</span> <span class="var">name</span>: <span class="type">String</span>, <span class="kw">var</span> <span class="var">marks</span>: <span class="type">Int</span>) {
+
+    <span class="cmt">// Property with custom getter</span>
+    <span class="kw">val</span> <span class="var">grade</span>: <span class="type">String</span>
+        <span class="kw">get</span>() = <span class="kw">when</span> {
+            <span class="var">marks</span> <span class="op">>=</span> <span class="num">90</span> <span class="op">-></span> <span class="str">"A"</span>
+            <span class="var">marks</span> <span class="op">>=</span> <span class="num">75</span> <span class="op">-></span> <span class="str">"B"</span>
+            <span class="var">marks</span> <span class="op">>=</span> <span class="num">60</span> <span class="op">-></span> <span class="str">"C"</span>
+            <span class="kw">else</span>        <span class="op">-></span> <span class="str">"F"</span>
+        }
+
+    <span class="kw">fun</span> <span class="fn">isPass</span>() = <span class="var">marks</span> <span class="op">>=</span> <span class="num">33</span>
+
+    <span class="kw">fun</span> <span class="fn">printReport</span>() {
+        <span class="fn">println</span>(<span class="str">"$name | Marks: $marks | Grade: $grade | ${if (isPass()) "Pass" else "Fail"}"</span>)
+    }
+}
+
+<span class="cmt">// Object banao — new keyword nahi!</span>
+<span class="kw">val</span> <span class="var">s1</span> = <span class="fn">Student</span>(<span class="str">"Anil"</span>, <span class="num">85</span>)
+<span class="kw">val</span> <span class="var">s2</span> = <span class="fn">Student</span>(<span class="str">"Neha"</span>, <span class="num">25</span>)
+
+<span class="var">s1</span>.<span class="fn">printReport</span>()  <span class="cmt">// Anil | Marks: 85 | Grade: B | Pass</span>
+<span class="var">s2</span>.<span class="fn">printReport</span>()  <span class="cmt">// Neha | Marks: 25 | Grade: F | Fail</span>
+
+<span class="cmt">// Marks update karo:</span>
+<span class="var">s2</span>.<span class="var">marks</span> = <span class="num">45</span>
+<span class="var">s2</span>.<span class="fn">printReport</span>()  <span class="cmt">// Neha | Marks: 45 | Grade: C | Pass</span>
+</pre>
+    <div class="box box-internal">
+      <div class="box-label">Andar Kya Hota Hai?</div>
+      Primary constructor JVM <code>&lt;init&gt;</code> ban jaata hai. <code>val</code> = private field + getter. <code>var</code> = private field + getter + setter. Kotlin yeh sab automatically generate karta hai.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Data Class — Sirf Data Rakhne Ke Liye</div>
+<pre>
+<span class="kw">data class</span> <span class="type">User</span>(<span class="kw">val</span> <span class="var">id</span>: <span class="type">Int</span>, <span class="kw">val</span> <span class="var">name</span>: <span class="type">String</span>, <span class="kw">val</span> <span class="var">city</span>: <span class="type">String</span>)
+
+<span class="kw">val</span> <span class="var">u1</span> = <span class="fn">User</span>(<span class="num">1</span>, <span class="str">"Meera"</span>, <span class="str">"Pune"</span>)
+<span class="kw">val</span> <span class="var">u2</span> = <span class="var">u1</span>.<span class="fn">copy</span>(<span class="var">city</span> = <span class="str">"Mumbai"</span>)   <span class="cmt">// ek cheez change, baaki same</span>
+
+<span class="fn">println</span>(<span class="var">u1</span>)             <span class="cmt">// User(id=1, name=Meera, city=Pune)</span>
+<span class="fn">println</span>(<span class="var">u1</span> <span class="op">==</span> <span class="var">u2</span>)       <span class="cmt">// false — content compare hota hai</span>
+
+<span class="cmt">// Destructuring:</span>
+<span class="kw">val</span> (<span class="var">id</span>, <span class="var">name</span>, <span class="var">city</span>) = <span class="var">u1</span>
+<span class="fn">println</span>(<span class="str">"$name lives in $city"</span>)  <span class="cmt">// Meera lives in Pune</span>
+</pre>
+    <div class="box box-why">
+      <div class="box-label">Auto-Generated Methods:</div>
+      <code>toString()</code> — readable print &nbsp;•&nbsp; <code>equals()</code> — content comparison &nbsp;•&nbsp; <code>hashCode()</code> — HashMap ke liye &nbsp;•&nbsp; <code>copy()</code> — modified copy &nbsp;•&nbsp; <code>componentN()</code> — destructuring. Java mein yeh sab manually likhna padta.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Sealed Class — Limited Khaandaan</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">API response sirf teen ho sakta hai: Success, Loading, ya Error. Sealed class kehti hai: "Is class ki subclasses sirf yahi hain, aur koi nahi." when se sab handle karo — compiler ensure karta hai koi case miss na ho.</span>
+    </div>
+<pre>
+<span class="kw">sealed class</span> <span class="type">ApiResult</span>&lt;<span class="type">T</span>&gt; {
+    <span class="kw">data class</span>  <span class="type">Success</span>&lt;<span class="type">T</span>&gt;(<span class="kw">val</span> <span class="var">data</span>: <span class="type">T</span>)      : <span class="type">ApiResult</span>&lt;<span class="type">T</span>&gt;()
+    <span class="kw">data class</span>  <span class="type">Error</span>(<span class="kw">val</span> <span class="var">message</span>: <span class="type">String</span>)   : <span class="type">ApiResult</span>&lt;<span class="type">Nothing</span>&gt;()
+    <span class="kw">object</span>      <span class="type">Loading</span>                     : <span class="type">ApiResult</span>&lt;<span class="type">Nothing</span>&gt;()
+}
+
+<span class="kw">fun</span> <span class="fn">handleResult</span>(<span class="var">result</span>: <span class="type">ApiResult</span>&lt;<span class="type">User</span>&gt;) {
+    <span class="kw">when</span> (<span class="var">result</span>) {
+        <span class="kw">is</span> <span class="type">ApiResult.Success</span>  <span class="op">-></span> <span class="fn">showUser</span>(<span class="var">result</span>.<span class="var">data</span>)
+        <span class="kw">is</span> <span class="type">ApiResult.Error</span>    <span class="op">-></span> <span class="fn">showError</span>(<span class="var">result</span>.<span class="var">message</span>)
+        <span class="type">ApiResult.Loading</span>     <span class="op">-></span> <span class="fn">showLoader</span>()
+    }  <span class="cmt">// else ki zarurat nahi — compiler jaanta hai sab cases cover hain</span>
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Inheritance + Open Classes</div>
+<pre>
+<span class="cmt">// Kotlin mein default final hai — explicitly open karo</span>
+<span class="kw">open class</span> <span class="type">Vehicle</span>(<span class="kw">val</span> <span class="var">brand</span>: <span class="type">String</span>) {
+    <span class="kw">open fun</span> <span class="fn">describe</span>() = <span class="fn">println</span>(<span class="str">"$brand vehicle"</span>)
+}
+
+<span class="kw">class</span> <span class="type">Car</span>(<span class="var">brand</span>: <span class="type">String</span>, <span class="kw">val</span> <span class="var">doors</span>: <span class="type">Int</span>) : <span class="type">Vehicle</span>(<span class="var">brand</span>) {
+    <span class="kw">override fun</span> <span class="fn">describe</span>() = <span class="fn">println</span>(<span class="str">"$brand car with $doors doors"</span>)
+}
+
+<span class="kw">class</span> <span class="type">Bike</span>(<span class="var">brand</span>: <span class="type">String</span>) : <span class="type">Vehicle</span>(<span class="var">brand</span>)
+
+<span class="kw">val</span> <span class="var">c</span> = <span class="fn">Car</span>(<span class="str">"Maruti"</span>, <span class="num">4</span>)
+<span class="var">c</span>.<span class="fn">describe</span>()   <span class="cmt">// Maruti car with 4 doors</span>
+</pre>
+    <div class="box box-internal">
+      <div class="box-label">Kyu Default Final?</div>
+      Effective Java ki guidance: "Design for inheritance or prohibit it." Accidentally extend karna bugs ka source hai. Kotlin mein explicitly <code>open</code> likhna = conscious decision.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Object + Companion Object — Singleton Pattern</div>
+<pre>
+<span class="cmt">// object = singleton — sirf ek instance</span>
+<span class="kw">object</span> <span class="type">AppConfig</span> {
+    <span class="kw">val</span> <span class="var">BASE_URL</span> = <span class="str">"https://api.example.com"</span>
+    <span class="kw">val</span> <span class="var">TIMEOUT</span>  = <span class="num">30</span>
+}
+
+<span class="fn">println</span>(<span class="type">AppConfig</span>.<span class="var">BASE_URL</span>)  <span class="cmt">// new nahi karna padta</span>
+
+<span class="cmt">// companion object = Java's static members</span>
+<span class="kw">class</span> <span class="type">User</span>(<span class="kw">val</span> <span class="var">name</span>: <span class="type">String</span>) {
+    <span class="kw">companion object</span> {
+        <span class="kw">fun</span> <span class="fn">create</span>(<span class="var">name</span>: <span class="type">String</span>) = <span class="fn">User</span>(<span class="var">name</span>)
+        <span class="kw">const val</span> <span class="var">MAX_NAME_LENGTH</span> = <span class="num">50</span>
+    }
+}
+
+<span class="kw">val</span> <span class="var">u</span> = <span class="type">User</span>.<span class="fn">create</span>(<span class="str">"Priya"</span>)  <span class="cmt">// factory method</span>
+</pre>
+  </div>
+</div>
+
+<!-- ========== SECTION 6: COLLECTIONS ========== -->
+<div id="s6" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 06</div>
+    <div class="section-title">Collections</div>
+    <div class="section-subtitle">Data ka samooh — List, Set, Map</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>List — Ordered Collection</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Class ki attendance register — order matter karta hai, ek hi naam do baar aa sakta hai (duplicate allowed).</span>
+    </div>
+<pre>
+<span class="cmt">// Immutable list — change nahi ho sakti</span>
+<span class="kw">val</span> <span class="var">students</span> = <span class="fn">listOf</span>(<span class="str">"Rahul"</span>, <span class="str">"Priya"</span>, <span class="str">"Amit"</span>, <span class="str">"Priya"</span>)
+
+<span class="var">students</span>[<span class="num">0</span>]           <span class="cmt">// Rahul — index se access</span>
+<span class="var">students</span>.<span class="fn">size</span>         <span class="cmt">// 4</span>
+<span class="var">students</span>.<span class="fn">contains</span>(<span class="str">"Priya"</span>)  <span class="cmt">// true</span>
+<span class="var">students</span>.<span class="fn">first</span>()      <span class="cmt">// Rahul</span>
+<span class="var">students</span>.<span class="fn">last</span>()       <span class="cmt">// Priya</span>
+<span class="var">students</span>.<span class="fn">indexOf</span>(<span class="str">"Amit"</span>)    <span class="cmt">// 2</span>
+
+<span class="cmt">// Mutable list — add/remove kar sakte ho</span>
+<span class="kw">val</span> <span class="var">classList</span> = <span class="fn">mutableListOf</span>(<span class="str">"Ram"</span>, <span class="str">"Shyam"</span>)
+<span class="var">classList</span>.<span class="fn">add</span>(<span class="str">"Geeta"</span>)
+<span class="var">classList</span>.<span class="fn">remove</span>(<span class="str">"Ram"</span>)
+<span class="var">classList</span>[<span class="num">0</span>] = <span class="str">"Krishna"</span>  <span class="cmt">// update</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Set — Unique Values Only</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Lucky draw ke liye ek box mein unique slips. Duplicate slip daalo — woh accept hi nahi hogi. Set same kaam karta hai — duplicates ignore hote hain.</span>
+    </div>
+<pre>
+<span class="kw">val</span> <span class="var">uniqueMarks</span> = <span class="fn">setOf</span>(<span class="num">90</span>, <span class="num">85</span>, <span class="num">90</span>, <span class="num">75</span>, <span class="num">85</span>)
+<span class="cmt">// Result: {90, 85, 75} — duplicates remove</span>
+
+<span class="kw">val</span> <span class="var">cities</span> = <span class="fn">mutableSetOf</span>(<span class="str">"Delhi"</span>, <span class="str">"Mumbai"</span>)
+<span class="var">cities</span>.<span class="fn">add</span>(<span class="str">"Delhi"</span>)    <span class="cmt">// nahi badhega — already hai</span>
+<span class="fn">println</span>(<span class="var">cities</span>.<span class="fn">size</span>)  <span class="cmt">// still 2</span>
+
+<span class="cmt">// Set operations:</span>
+<span class="kw">val</span> <span class="var">a</span> = <span class="fn">setOf</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>)
+<span class="kw">val</span> <span class="var">b</span> = <span class="fn">setOf</span>(<span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>)
+<span class="kw">val</span> <span class="var">common</span>  = <span class="var">a</span> <span class="fn">intersect</span> <span class="var">b</span>  <span class="cmt">// {3, 4}</span>
+<span class="kw">val</span> <span class="var">all</span>     = <span class="var">a</span> <span class="fn">union</span> <span class="var">b</span>      <span class="cmt">// {1,2,3,4,5,6}</span>
+<span class="kw">val</span> <span class="var">onlyInA</span> = <span class="var">a</span> <span class="fn">subtract</span> <span class="var">b</span>  <span class="cmt">// {1, 2}</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Map — Key → Value</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Phone book — naam (key) → number (value). Naam se number dhundo. Har naam unique hoga, lekin ek number do logon ke paas ho sakta hai.</span>
+    </div>
+<pre>
+<span class="kw">val</span> <span class="var">phoneBook</span> = <span class="fn">mapOf</span>(
+    <span class="str">"Rahul"</span> <span class="kw">to</span> <span class="str">"9876543210"</span>,
+    <span class="str">"Priya"</span> <span class="kw">to</span> <span class="str">"8765432109"</span>,
+    <span class="str">"Amit"</span>  <span class="kw">to</span> <span class="str">"7654321098"</span>
+)
+
+<span class="var">phoneBook</span>[<span class="str">"Rahul"</span>]           <span class="cmt">// "9876543210"</span>
+<span class="var">phoneBook</span>[<span class="str">"Kiran"</span>]           <span class="cmt">// null — nahi mila</span>
+<span class="var">phoneBook</span>.<span class="fn">getOrDefault</span>(<span class="str">"Kiran"</span>, <span class="str">"Unknown"</span>)  <span class="cmt">// "Unknown"</span>
+<span class="var">phoneBook</span>.<span class="fn">containsKey</span>(<span class="str">"Priya"</span>)   <span class="cmt">// true</span>
+<span class="var">phoneBook</span>.<span class="fn">keys</span>     <span class="cmt">// [Rahul, Priya, Amit]</span>
+<span class="var">phoneBook</span>.<span class="fn">values</span>   <span class="cmt">// [9876543210, ...]</span>
+
+<span class="cmt">// Map pe loop:</span>
+<span class="kw">for</span> ((<span class="var">name</span>, <span class="var">number</span>) <span class="kw">in</span> <span class="var">phoneBook</span>) {
+    <span class="fn">println</span>(<span class="str">"$name: $number"</span>)
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Collection Functions — Power Tools</div>
+    <div class="topic-desc">Yeh Kotlin ka asli jadoo hai. filter, map, reduce, groupBy — sab ek line mein.</div>
+<pre>
+<span class="kw">val</span> <span class="var">marks</span> = <span class="fn">listOf</span>(<span class="num">45</span>, <span class="num">82</span>, <span class="num">29</span>, <span class="num">91</span>, <span class="num">33</span>, <span class="num">17</span>, <span class="num">76</span>, <span class="num">58</span>)
+
+<span class="cmt">// filter — condition wale rakho</span>
+<span class="kw">val</span> <span class="var">passed</span>   = <span class="var">marks</span>.<span class="fn">filter</span> { <span class="var">it</span> <span class="op">>=</span> <span class="num">33</span> }    <span class="cmt">// [45,82,91,33,76,58]</span>
+
+<span class="cmt">// map — transform each element</span>
+<span class="kw">val</span> <span class="var">percent</span>  = <span class="var">marks</span>.<span class="fn">map</span> { <span class="var">it</span> <span class="op">*</span> <span class="num">100</span> / <span class="num">100</span> }
+
+<span class="cmt">// sortedBy, sortedDescending</span>
+<span class="kw">val</span> <span class="var">topFirst</span> = <span class="var">marks</span>.<span class="fn">sortedDescending</span>()
+
+<span class="cmt">// any / all / none</span>
+<span class="var">marks</span>.<span class="fn">any</span>  { <span class="var">it</span> <span class="op">></span> <span class="num">90</span> }   <span class="cmt">// true — koi ek 90+ hai?</span>
+<span class="var">marks</span>.<span class="fn">all</span>  { <span class="var">it</span> <span class="op">></span> <span class="num">30</span> }   <span class="cmt">// false — sab 30+ nahi</span>
+<span class="var">marks</span>.<span class="fn">none</span> { <span class="var">it</span> <span class="op">></span> <span class="num">100</span>}   <span class="cmt">// true — koi 100+ nahi</span>
+
+<span class="cmt">// count, sum, average, max, min</span>
+<span class="var">marks</span>.<span class="fn">count</span> { <span class="var">it</span> <span class="op">>=</span> <span class="num">60</span> }  <span class="cmt">// kitne 60+?</span>
+<span class="var">marks</span>.<span class="fn">average</span>()            <span class="cmt">// average</span>
+
+<span class="cmt">// groupBy — category mein sort karo</span>
+<span class="kw">val</span> <span class="var">byResult</span> = <span class="var">marks</span>.<span class="fn">groupBy</span> { <span class="kw">if</span> (<span class="var">it</span> <span class="op">>=</span> <span class="num">33</span>) <span class="str">"Pass"</span> <span class="kw">else</span> <span class="str">"Fail"</span> }
+<span class="cmt">// {Pass=[45,82,91,33,76,58], Fail=[29,17]}</span>
+
+<span class="cmt">// Chain karo:</span>
+<span class="kw">val</span> <span class="var">topStudents</span> = <span class="var">marks</span>
+    .<span class="fn">filter</span> { <span class="var">it</span> <span class="op">>=</span> <span class="num">60</span> }
+    .<span class="fn">sortedDescending</span>()
+    .<span class="fn">take</span>(<span class="num">3</span>)       <span class="cmt">// top 3</span>
+</pre>
+    <div class="box box-internal">
+      <div class="box-label">Performance Tip</div>
+      Har step naya list banata hai. Bahut badi list (10K+ items) ke liye <code>asSequence()</code> use karo — lazy evaluation, ek hi pass:
+      <br><br><code>marks.asSequence().filter { it > 60 }.map { it * 2 }.toList()</code>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 7: CONTROL FLOW ========== -->
+<div id="s7" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 07</div>
+    <div class="section-title">Control Flow</div>
+    <div class="section-subtitle">Faisla karna aur ghoomna phirna</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>if — Expression Bhi Hai, Statement Bhi</div>
+    <div class="topic-desc">Kotlin mein <code>if</code> ek value return kar sakta hai — ternary operator ki zarurat nahi.</div>
+<pre>
+<span class="kw">val</span> <span class="var">score</span> = <span class="num">78</span>
+
+<span class="cmt">// Statement style:</span>
+<span class="kw">if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">33</span>) <span class="fn">println</span>(<span class="str">"Pass"</span>) <span class="kw">else</span> <span class="fn">println</span>(<span class="str">"Fail"</span>)
+
+<span class="cmt">// Expression style — value return karta hai:</span>
+<span class="kw">val</span> <span class="var">result</span> = <span class="kw">if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">33</span>) <span class="str">"Pass"</span> <span class="kw">else</span> <span class="str">"Fail"</span>
+
+<span class="cmt">// Multi-line expression:</span>
+<span class="kw">val</span> <span class="var">grade</span> = <span class="kw">if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">90</span>)      <span class="str">"A — Topper!"</span>
+             <span class="kw">else if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">75</span>) <span class="str">"B — First Class"</span>
+             <span class="kw">else if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">60</span>) <span class="str">"C — Second Class"</span>
+             <span class="kw">else if</span> (<span class="var">score</span> <span class="op">>=</span> <span class="num">33</span>) <span class="str">"D — Pass"</span>
+             <span class="kw">else</span>                   <span class="str">"F — Fail"</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>when — Switch Ka Baap</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Aacha, railway station pe announcement: "Train number X platform Y pe aayegi." Har train number ke liye alag case — yahi <code>when</code> hai, lekin Java ke switch se bahut zyada powerful.</span>
+    </div>
+<pre>
+<span class="kw">val</span> <span class="var">day</span> = <span class="num">3</span>
+
+<span class="cmt">// Basic when:</span>
+<span class="kw">val</span> <span class="var">dayName</span> = <span class="kw">when</span> (<span class="var">day</span>) {
+    <span class="num">1</span>       <span class="op">-></span> <span class="str">"Monday"</span>
+    <span class="num">2</span>       <span class="op">-></span> <span class="str">"Tuesday"</span>
+    <span class="num">3</span>       <span class="op">-></span> <span class="str">"Wednesday"</span>
+    <span class="num">6</span>, <span class="num">7</span>    <span class="op">-></span> <span class="str">"Weekend!"</span>   <span class="cmt">// multiple values</span>
+    <span class="kw">else</span>    <span class="op">-></span> <span class="str">"Unknown"</span>
+}
+
+<span class="cmt">// when with range:</span>
+<span class="kw">val</span> <span class="var">category</span> = <span class="kw">when</span> (<span class="var">score</span>) {
+    <span class="kw">in</span> <span class="num">90</span>..<span class="num">100</span> <span class="op">-></span> <span class="str">"Distinction"</span>
+    <span class="kw">in</span> <span class="num">75</span>..<span class="num">89</span>  <span class="op">-></span> <span class="str">"First Class"</span>
+    <span class="kw">in</span> <span class="num">33</span>..<span class="num">74</span>  <span class="op">-></span> <span class="str">"Pass"</span>
+    <span class="kw">else</span>       <span class="op">-></span> <span class="str">"Fail"</span>
+}
+
+<span class="cmt">// when without argument — if-else chain replace:</span>
+<span class="kw">when</span> {
+    <span class="var">score</span> <span class="op">></span> <span class="num">95</span> <span class="op">-></span> <span class="fn">println</span>(<span class="str">"State topper!"</span>)
+    <span class="var">score</span> <span class="op">></span> <span class="num">75</span> <span class="op">-></span> <span class="fn">println</span>(<span class="str">"Bohot acha!"</span>)
+    <span class="kw">else</span>        <span class="op">-></span> <span class="fn">println</span>(<span class="str">"Aur mehnat karo"</span>)
+}
+
+<span class="cmt">// when with type check:</span>
+<span class="kw">fun</span> <span class="fn">describe</span>(<span class="var">obj</span>: <span class="type">Any</span>) = <span class="kw">when</span> (<span class="var">obj</span>) {
+    <span class="kw">is</span> <span class="type">Int</span>    <span class="op">-></span> <span class="str">"Number: $obj"</span>
+    <span class="kw">is</span> <span class="type">String</span> <span class="op">-></span> <span class="str">"Text: ${obj.uppercase()}"</span>
+    <span class="kw">is</span> <span class="type">List</span><span class="op">*</span>  <span class="op">-></span> <span class="str">"List of ${obj.size} items"</span>
+    <span class="kw">else</span>       <span class="op">-></span> <span class="str">"Unknown"</span>
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>for Loops — Ghoomna Phirna</div>
+<pre>
+<span class="cmt">// Range loops:</span>
+<span class="kw">for</span> (<span class="var">i</span> <span class="kw">in</span> <span class="num">1</span>..<span class="num">5</span>)          <span class="fn">print</span>(<span class="str">"$i "</span>)  <span class="cmt">// 1 2 3 4 5</span>
+<span class="kw">for</span> (<span class="var">i</span> <span class="kw">in</span> <span class="num">1</span> <span class="kw">until</span> <span class="num">5</span>)    <span class="fn">print</span>(<span class="str">"$i "</span>)  <span class="cmt">// 1 2 3 4</span>
+<span class="kw">for</span> (<span class="var">i</span> <span class="kw">in</span> <span class="num">5</span> <span class="kw">downTo</span> <span class="num">1</span>)  <span class="fn">print</span>(<span class="str">"$i "</span>)  <span class="cmt">// 5 4 3 2 1</span>
+<span class="kw">for</span> (<span class="var">i</span> <span class="kw">in</span> <span class="num">0</span>..<span class="num">10</span> <span class="kw">step</span> <span class="num">2</span>) <span class="fn">print</span>(<span class="str">"$i "</span>)  <span class="cmt">// 0 2 4 6 8 10</span>
+
+<span class="cmt">// List pe loop:</span>
+<span class="kw">val</span> <span class="var">states</span> = <span class="fn">listOf</span>(<span class="str">"UP"</span>, <span class="str">"MP"</span>, <span class="str">"GJ"</span>, <span class="str">"MH"</span>)
+<span class="kw">for</span> (<span class="var">state</span> <span class="kw">in</span> <span class="var">states</span>) <span class="fn">println</span>(<span class="var">state</span>)
+
+<span class="cmt">// Index ke saath:</span>
+<span class="kw">for</span> ((<span class="var">index</span>, <span class="var">state</span>) <span class="kw">in</span> <span class="var">states</span>.<span class="fn">withIndex</span>()) {
+    <span class="fn">println</span>(<span class="str">"$index: $state"</span>)
+}
+
+<span class="cmt">// Map pe loop:</span>
+<span class="kw">for</span> ((<span class="var">key</span>, <span class="var">value</span>) <span class="kw">in</span> <span class="var">phoneBook</span>) {
+    <span class="fn">println</span>(<span class="str">"$key → $value"</span>)
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>while + do-while + break + continue</div>
+<pre>
+<span class="cmt">// while:</span>
+<span class="kw">var</span> <span class="var">attempts</span> = <span class="num">0</span>
+<span class="kw">while</span> (<span class="var">attempts</span> <span class="op"><</span> <span class="num">3</span>) {
+    <span class="fn">println</span>(<span class="str">"Attempt ${attempts + 1}"</span>)
+    <span class="var">attempts</span>++
+}
+
+<span class="cmt">// do-while — pehle karo, phir check:</span>
+<span class="kw">do</span> {
+    <span class="fn">print</span>(<span class="str">"Enter PIN: "</span>)
+    <span class="kw">val</span> <span class="var">pin</span> = <span class="fn">readLine</span>()
+} <span class="kw">while</span> (<span class="var">pin</span> <span class="op">!=</span> <span class="str">"1234"</span>)
+
+<span class="cmt">// break + continue:</span>
+<span class="kw">for</span> (<span class="var">i</span> <span class="kw">in</span> <span class="num">1</span>..<span class="num">10</span>) {
+    <span class="kw">if</span> (<span class="var">i</span> <span class="op">==</span> <span class="num">5</span>) <span class="kw">continue</span>   <span class="cmt">// 5 skip karo</span>
+    <span class="kw">if</span> (<span class="var">i</span> <span class="op">==</span> <span class="num">8</span>) <span class="kw">break</span>      <span class="cmt">// 8 pe band karo</span>
+    <span class="fn">print</span>(<span class="str">"$i "</span>)             <span class="cmt">// 1 2 3 4 6 7</span>
+}
+</pre>
+  </div>
+</div>
+
+<!-- ========== SECTION 8: LAMBDAS ========== -->
+<div id="s8" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 08</div>
+    <div class="section-title">Lambdas & Higher-Order Functions</div>
+    <div class="section-subtitle">Functions as values — functional programming ka darwaza</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Lambda — Naamless Function</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Ghar pe ek thela-wala aata hai, sirf ek kaam karne ke liye — sabzi chhaanna. Uska naam nahi poochte — seedha kaam batao. Lambda waisa hi hai — naam nahi, sirf kaam.</span>
+    </div>
+<pre>
+<span class="cmt">// Lambda syntax: { parameters -> body }</span>
+<span class="kw">val</span> <span class="var">greet</span>  = { <span class="fn">println</span>(<span class="str">"Namaste!"</span>) }
+<span class="kw">val</span> <span class="var">add</span>    = { <span class="var">a</span>: <span class="type">Int</span>, <span class="var">b</span>: <span class="type">Int</span> <span class="op">-></span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span> }
+<span class="kw">val</span> <span class="var">isEven</span> = { <span class="var">n</span>: <span class="type">Int</span> <span class="op">-></span> <span class="var">n</span> <span class="op">%</span> <span class="num">2</span> <span class="op">==</span> <span class="num">0</span> }
+
+<span class="fn">greet</span>()            <span class="cmt">// Namaste!</span>
+<span class="fn">println</span>(<span class="fn">add</span>(<span class="num">3</span>, <span class="num">4</span>)) <span class="cmt">// 7</span>
+<span class="fn">println</span>(<span class="fn">isEven</span>(<span class="num">4</span>)) <span class="cmt">// true</span>
+
+<span class="cmt">// Lambda type explicitly:</span>
+<span class="kw">val</span> <span class="var">multiply</span>: (<span class="type">Int</span>, <span class="type">Int</span>) <span class="op">-></span> <span class="type">Int</span> = { <span class="var">a</span>, <span class="var">b</span> <span class="op">-></span> <span class="var">a</span> <span class="op">*</span> <span class="var">b</span> }
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>it — Single Parameter Shortcut</div>
+<pre>
+<span class="kw">val</span> <span class="var">numbers</span> = <span class="fn">listOf</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>)
+
+<span class="cmt">// Parameter naam dena — verbose:</span>
+<span class="var">numbers</span>.<span class="fn">filter</span> { <span class="var">num</span> <span class="op">-></span> <span class="var">num</span> <span class="op">></span> <span class="num">2</span> }
+
+<span class="cmt">// it use karo — same kaam:</span>
+<span class="var">numbers</span>.<span class="fn">filter</span> { <span class="var">it</span> <span class="op">></span> <span class="num">2</span> }         <span class="cmt">// [3, 4, 5]</span>
+<span class="var">numbers</span>.<span class="fn">map</span>    { <span class="var">it</span> <span class="op">*</span> <span class="num">2</span> }         <span class="cmt">// [2, 4, 6, 8, 10]</span>
+<span class="var">numbers</span>.<span class="fn">filter</span> { <span class="var">it</span> <span class="op">%</span> <span class="num">2</span> <span class="op">==</span> <span class="num">0</span> }   <span class="cmt">// [2, 4] — even numbers</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Higher-Order Functions — Lambda Pass Karo</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Socho ek "courier service" hai. Tum bolo: "Yeh item le jaao, yeh kaam karo." Kya kaam karna hai — tum batate ho, courier service execute karta hai. Lambda = "yeh kaam" hai jo tum dete ho.</span>
+    </div>
+<pre>
+<span class="cmt">// Function jo dusra function accept kare:</span>
+<span class="kw">fun</span> <span class="fn">calculate</span>(<span class="var">a</span>: <span class="type">Int</span>, <span class="var">b</span>: <span class="type">Int</span>, <span class="var">operation</span>: (<span class="type">Int</span>, <span class="type">Int</span>) <span class="op">-></span> <span class="type">Int</span>): <span class="type">Int</span> {
+    <span class="kw">return</span> <span class="fn">operation</span>(<span class="var">a</span>, <span class="var">b</span>)
+}
+
+<span class="fn">calculate</span>(<span class="num">10</span>, <span class="num">5</span>) { <span class="var">a</span>, <span class="var">b</span> <span class="op">-></span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span> }   <span class="cmt">// 15</span>
+<span class="fn">calculate</span>(<span class="num">10</span>, <span class="num">5</span>) { <span class="var">a</span>, <span class="var">b</span> <span class="op">-></span> <span class="var">a</span> <span class="op">*</span> <span class="var">b</span> }   <span class="cmt">// 50</span>
+<span class="fn">calculate</span>(<span class="num">10</span>, <span class="num">5</span>) { <span class="var">a</span>, <span class="var">b</span> <span class="op">-></span> <span class="var">a</span> <span class="op">-</span> <span class="var">b</span> }   <span class="cmt">// 5</span>
+
+<span class="cmt">// Real world — button click listener (Android):</span>
+<span class="var">button</span>.<span class="fn">setOnClickListener</span> {
+    <span class="fn">println</span>(<span class="str">"Button dabaya!"</span>)
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Trailing Lambda + Inline Functions</div>
+<pre>
+<span class="cmt">// Agar last parameter lambda hai — baahar nikaal sakte ho:</span>
+<span class="kw">fun</span> <span class="fn">doTask</span>(<span class="var">times</span>: <span class="type">Int</span>, <span class="var">task</span>: () <span class="op">-></span> <span class="type">Unit</span>) {
+    <span class="kw">repeat</span>(<span class="var">times</span>) { <span class="fn">task</span>() }
+}
+
+<span class="cmt">// Andar lambda:</span>
+<span class="fn">doTask</span>(<span class="num">3</span>, { <span class="fn">println</span>(<span class="str">"Kaam karo"</span>) })
+
+<span class="cmt">// Trailing lambda style — zyada readable:</span>
+<span class="fn">doTask</span>(<span class="num">3</span>) { <span class="fn">println</span>(<span class="str">"Kaam karo"</span>) }
+
+<span class="cmt">// inline function — lambda code calling site pe paste hoti hai</span>
+<span class="ann">@inline</span>
+<span class="kw">fun</span> <span class="fn">measure</span>(<span class="var">block</span>: () <span class="op">-></span> <span class="type">Unit</span>): <span class="type">Long</span> {
+    <span class="kw">val</span> <span class="var">start</span> = <span class="type">System</span>.<span class="fn">currentTimeMillis</span>()
+    <span class="fn">block</span>()
+    <span class="kw">return</span> <span class="type">System</span>.<span class="fn">currentTimeMillis</span>() <span class="op">-</span> <span class="var">start</span>
+}
+</pre>
+    <div class="box box-internal">
+      <div class="box-label">Andar Kya Hota Hai?</div>
+      Normal lambda = anonymous class object. <code>inline</code> = lambda body literally calling site pe copy ho jaata hai — zero object overhead. Performance critical code mein use karo.
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 9: SCOPE FUNCTIONS ========== -->
+<div id="s9" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 09</div>
+    <div class="section-title">Scope Functions</div>
+    <div class="section-subtitle">let, apply, run, also, with — 5 bhai, alag alag kaam</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Quick Reference Table</div>
+    <table class="scope-table">
+      <tr>
+        <th>Function</th>
+        <th>Object reference</th>
+        <th>Return value</th>
+        <th>Main use</th>
+      </tr>
+      <tr>
+        <td>let</td>
+        <td>it</td>
+        <td>Lambda result</td>
+        <td>Null check + transform</td>
+      </tr>
+      <tr>
+        <td>apply</td>
+        <td>this</td>
+        <td>Same object</td>
+        <td>Object configure karo</td>
+      </tr>
+      <tr>
+        <td>run</td>
+        <td>this</td>
+        <td>Lambda result</td>
+        <td>Configure + compute</td>
+      </tr>
+      <tr>
+        <td>also</td>
+        <td>it</td>
+        <td>Same object</td>
+        <td>Side effects (logging)</td>
+      </tr>
+      <tr>
+        <td>with</td>
+        <td>this</td>
+        <td>Lambda result</td>
+        <td>Object ke saath grouped kaam</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>let — Null Check + Transform</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">"Agar parcel aaya hai (<i>not null</i>), toh andar aane do aur kaam karo." <code>let</code> sirf tab chalega jab value null nahi hogi.</span>
+    </div>
+<pre>
+<span class="cmt">// Null safe execution:</span>
+<span class="kw">val</span> <span class="var">email</span>: <span class="type">String</span><span class="op">?</span> = <span class="fn">getEmail</span>()
+
+<span class="var">email</span><span class="op">?.</span><span class="fn">let</span> {
+    <span class="fn">sendEmail</span>(<span class="var">it</span>)          <span class="cmt">// it = email value</span>
+    <span class="fn">println</span>(<span class="str">"Sent to $it"</span>)
+}
+
+<span class="cmt">// Transform:</span>
+<span class="kw">val</span> <span class="var">length</span> = <span class="var">email</span><span class="op">?.</span><span class="fn">let</span> { <span class="var">it</span>.<span class="fn">length</span> } <span class="op">?:</span> <span class="num">0</span>
+
+<span class="cmt">// Scope limit karna (temp variable se bachao):</span>
+<span class="kw">val</span> <span class="var">result</span> = <span class="fn">someComplexCalculation</span>().<span class="fn">let</span> {
+    <span class="kw">if</span> (<span class="var">it</span> <span class="op">></span> <span class="num">100</span>) <span class="str">"High"</span> <span class="kw">else</span> <span class="str">"Low"</span>
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>apply — Object Ko Configure Karo</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">"Naya register khola, usmein naam likha, class likha, date likha — phir wahi register wapas de do." <code>apply</code> object ko configure karta hai, same object return karta hai.</span>
+    </div>
+<pre>
+<span class="cmt">// Bina apply:</span>
+<span class="kw">val</span> <span class="var">student</span> = <span class="fn">Student</span>()
+<span class="var">student</span>.<span class="var">name</span>    = <span class="str">"Arjun"</span>
+<span class="var">student</span>.<span class="var">marks</span>   = <span class="num">85</span>
+<span class="var">student</span>.<span class="var">subject</span> = <span class="str">"Maths"</span>
+
+<span class="cmt">// apply ke saath — cleaner:</span>
+<span class="kw">val</span> <span class="var">student</span> = <span class="fn">Student</span>().<span class="fn">apply</span> {
+    <span class="var">name</span>    = <span class="str">"Arjun"</span>    <span class="cmt">// this.name = (implicit)</span>
+    <span class="var">marks</span>   = <span class="num">85</span>
+    <span class="var">subject</span> = <span class="str">"Maths"</span>
+}  <span class="cmt">// returns the student object itself</span>
+
+<span class="cmt">// Android example — Intent configure:</span>
+<span class="kw">val</span> <span class="var">intent</span> = <span class="type">Intent</span>(<span class="kw">this</span>, <span class="type">MainActivity</span>::<span class="kw">class</span>.<span class="fn">java</span>).<span class="fn">apply</span> {
+    <span class="fn">putExtra</span>(<span class="str">"USER_ID"</span>, <span class="num">42</span>)
+    <span class="fn">putExtra</span>(<span class="str">"FROM"</span>, <span class="str">"login"</span>)
+    <span class="var">flags</span> = <span class="type">Intent</span>.<span class="var">FLAG_ACTIVITY_CLEAR_TOP</span>
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>also — Side Effect, Object Wapas</div>
+<pre>
+<span class="cmt">// also = apply jaisa, lekin 'it' use karta hai, logging ke liye best:</span>
+<span class="kw">val</span> <span class="var">user</span> = <span class="fn">createUser</span>(<span class="str">"Sita"</span>)
+    .<span class="fn">also</span> { <span class="fn">println</span>(<span class="str">"User created: ${it.name}"</span>) }  <span class="cmt">// side effect</span>
+    .<span class="fn">also</span> { <span class="fn">saveToDb</span>(<span class="var">it</span>) }                          <span class="cmt">// save</span>
+    .<span class="fn">also</span> { <span class="fn">sendWelcomeEmail</span>(<span class="var">it</span>) }                  <span class="cmt">// email</span>
+<span class="cmt">// user object returned at end</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>run — Configure + Compute Result</div>
+<pre>
+<span class="cmt">// run = apply + let: configure karo, result return karo</span>
+<span class="kw">val</span> <span class="var">summary</span> = <span class="var">student</span>.<span class="fn">run</span> {
+    <span class="str">"$name scored $marks — ${if (marks >= 33) "Pass" else "Fail"}"</span>
+}
+<span class="fn">println</span>(<span class="var">summary</span>)  <span class="cmt">// "Arjun scored 85 — Pass"</span>
+
+<span class="cmt">// Null safe:</span>
+<span class="kw">val</span> <span class="var">len</span> = <span class="var">name</span><span class="op">?.</span><span class="fn">run</span> { <span class="fn">length</span> } <span class="op">?:</span> <span class="num">0</span>
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>with — Object Ke Saath Grouped Kaam</div>
+<pre>
+<span class="cmt">// with sirf tab use karo jab object non-null ho:</span>
+<span class="kw">with</span>(<span class="var">student</span>) {
+    <span class="fn">println</span>(<span class="str">"Name: $name"</span>)      <span class="cmt">// this.name implicit</span>
+    <span class="fn">println</span>(<span class="str">"Marks: $marks"</span>)
+    <span class="fn">println</span>(<span class="str">"Grade: $grade"</span>)
+}
+
+<span class="cmt">// StringBuilder ke saath classic use:</span>
+<span class="kw">val</span> <span class="var">report</span> = <span class="fn">buildString</span> {
+    <span class="fn">append</span>(<span class="str">"Student Report\n"</span>)
+    <span class="fn">append</span>(<span class="str">"=============\n"</span>)
+    <span class="fn">append</span>(<span class="str">"Name: Ravi\n"</span>)
+    <span class="fn">append</span>(<span class="str">"Marks: 88\n"</span>)
+}
+</pre>
+  </div>
+</div>
+
+<!-- ========== SECTION 10: COROUTINES ========== -->
+<div id="s10" class="section">
+  <div class="section-header">
+    <div class="section-num">CHAPTER 10</div>
+    <div class="section-title">Coroutines</div>
+    <div class="section-subtitle">Async code — bina ruke, bina crash kiye</div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Problem — Threads Se Kya Problem Tha?</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Dukaan ka owner (main thread) har cheez khud kare — parcel bhi uthaye, register bhi bhare, customer bhi sambhale. Jab tak parcel wala aata hai — sab kaam ruk gaya. Thread block = yahi hota hai. Coroutines = helper hire karo, owner apna kaam karta rahe.</span>
+    </div>
+<pre>
+<span class="cmt">// Thread block karta hai — BAD (Android mein app freeze hogi):</span>
+<span class="kw">fun</span> <span class="fn">fetchData</span>() {
+    <span class="type">Thread</span>.<span class="fn">sleep</span>(<span class="num">3000</span>)  <span class="cmt">// 3 sec ke liye UI freeze</span>
+    <span class="fn">println</span>(<span class="str">"Data aaya"</span>)
+}
+
+<span class="cmt">// Coroutine — thread block nahi karta:</span>
+<span class="kw">suspend fun</span> <span class="fn">fetchData</span>() {
+    <span class="fn">delay</span>(<span class="num">3000</span>)        <span class="cmt">// suspend karta hai — thread free hai</span>
+    <span class="fn">println</span>(<span class="str">"Data aaya"</span>)
+}
+</pre>
+    <div class="box box-internal">
+      <div class="box-label">Thread vs Coroutine</div>
+      Thread = OS resource, ~1MB memory. Coroutine = Kotlin runtime ka concept, sirf kuch bytes. Ek thread pe hazaron coroutines chal sakti hain. Context switch bhi cheap hai.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>suspend Function — Ruk sakti hai, block nahi karti</div>
+<pre>
+<span class="cmt">// suspend = yeh function pause ho sakta hai</span>
+<span class="kw">suspend fun</span> <span class="fn">getUserFromApi</span>(<span class="var">id</span>: <span class="type">Int</span>): <span class="type">User</span> {
+    <span class="fn">delay</span>(<span class="num">1000</span>)                    <span class="cmt">// network call simulate</span>
+    <span class="kw">return</span> <span class="fn">User</span>(<span class="var">id</span>, <span class="str">"Ravi"</span>, <span class="str">"Delhi"</span>)
+}
+
+<span class="cmt">// suspend function sirf:</span>
+<span class="cmt">// 1. Dusri suspend function se call ho sakti hai</span>
+<span class="cmt">// 2. Ya coroutine builder se (launch, async etc.)</span>
+
+<span class="cmt">// Normal function se direct nahi:</span>
+<span class="kw">fun</span> <span class="fn">normalFun</span>() {
+    <span class="fn">getUserFromApi</span>(<span class="num">1</span>)  <span class="err">// ERROR — suspend function yahan nahi chalegi</span>
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Coroutine Builders — launch, async, runBlocking</div>
+<pre>
+<span class="kw">import</span> <span class="var">kotlinx.coroutines</span>.*
+
+<span class="cmt">// runBlocking — testing mein use karo, production mein nahi</span>
+<span class="kw">fun</span> <span class="fn">main</span>() = <span class="fn">runBlocking</span> {
+
+    <span class="cmt">// launch — fire and forget (no return value)</span>
+    <span class="kw">val</span> <span class="var">job</span> = <span class="fn">launch</span> {
+        <span class="fn">delay</span>(<span class="num">1000</span>)
+        <span class="fn">println</span>(<span class="str">"Background kaam ho gaya"</span>)
+    }
+
+    <span class="fn">println</span>(<span class="str">"Yeh pehle print hoga"</span>)
+    <span class="var">job</span>.<span class="fn">join</span>()    <span class="cmt">// wait karo finish hone ka</span>
+
+    <span class="cmt">// async — result chahiye</span>
+    <span class="kw">val</span> <span class="var">deferred</span> = <span class="fn">async</span> {
+        <span class="fn">delay</span>(<span class="num">500</span>)
+        <span class="num">42</span>    <span class="cmt">// return value</span>
+    }
+    <span class="kw">val</span> <span class="var">result</span> = <span class="var">deferred</span>.<span class="fn">await</span>()   <span class="cmt">// block until result</span>
+    <span class="fn">println</span>(<span class="str">"Result: $result"</span>)        <span class="cmt">// 42</span>
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Parallel Execution — Dono Kaam Ek Saath</div>
+    <div class="box box-hindi">
+      <div class="box-label">Hindi Example</div>
+      <span class="devanagari">Ek kaam — pehle dal chadhao, phir sabzi kaato. Sequential = 20 min. Smart = dono ek saath — sirf 12 min. <code>async</code> se parallel chalao.</span>
+    </div>
+<pre>
+<span class="kw">suspend fun</span> <span class="fn">getTotal</span>(): <span class="type">Int</span> = <span class="fn">coroutineScope</span> {
+
+    <span class="cmt">// Sequential — 2 sec total:</span>
+    <span class="kw">val</span> <span class="var">price1</span> = <span class="fn">fetchPrice1</span>()   <span class="cmt">// 1 sec wait</span>
+    <span class="kw">val</span> <span class="var">price2</span> = <span class="fn">fetchPrice2</span>()   <span class="cmt">// 1 sec wait</span>
+
+    <span class="cmt">// Parallel — 1 sec total!</span>
+    <span class="kw">val</span> <span class="var">p1</span> = <span class="fn">async</span> { <span class="fn">fetchPrice1</span>() }   <span class="cmt">// starts immediately</span>
+    <span class="kw">val</span> <span class="var">p2</span> = <span class="fn">async</span> { <span class="fn">fetchPrice2</span>() }   <span class="cmt">// starts immediately</span>
+    <span class="var">p1</span>.<span class="fn">await</span>() <span class="op">+</span> <span class="var">p2</span>.<span class="fn">await</span>()   <span class="cmt">// dono ka intezaar</span>
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Dispatchers — Kaunsa Thread?</div>
+    <table>
+      <tr><th>Dispatcher</th><th>Kab Use Karo</th><th>Example</th></tr>
+      <tr><td><code>Dispatchers.Main</code></td><td class="desc-cell">UI update karna</td><td><code>textView.text = "Hi"</code></td></tr>
+      <tr><td><code>Dispatchers.IO</code></td><td class="desc-cell">Network, DB, File</td><td><code>retrofit.execute()</code></td></tr>
+      <tr><td><code>Dispatchers.Default</code></td><td class="desc-cell">Heavy computation</td><td>Sorting, parsing</td></tr>
+      <tr><td><code>Dispatchers.Unconfined</code></td><td class="desc-cell">Testing only</td><td>Nahi use karna generally</td></tr>
+    </table>
+<pre>
+<span class="kw">viewModelScope</span>.<span class="fn">launch</span> {
+    <span class="cmt">// Main thread pe shuru</span>
+    <span class="fn">showLoading</span>(<span class="kw">true</span>)
+
+    <span class="kw">val</span> <span class="var">data</span> = <span class="fn">withContext</span>(<span class="type">Dispatchers</span>.<span class="var">IO</span>) {
+        <span class="fn">api</span>.<span class="fn">fetchUsers</span>()   <span class="cmt">// IO thread pe</span>
+    }
+
+    <span class="cmt">// Wapas main thread pe:</span>
+    <span class="fn">showLoading</span>(<span class="kw">false</span>)
+    <span class="fn">updateUI</span>(<span class="var">data</span>)
+}
+</pre>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title"><span class="dot"></span>Exception Handling + Cancellation</div>
+<pre>
+<span class="cmt">// try-catch — coroutines mein bhi normal kaam karta hai:</span>
+<span class="kw">launch</span> {
+    <span class="kw">try</span> {
+        <span class="kw">val</span> <span class="var">data</span> = <span class="fn">fetchData</span>()
+        <span class="fn">processData</span>(<span class="var">data</span>)
+    } <span class="kw">catch</span> (<span class="var">e</span>: <span class="type">Exception</span>) {
+        <span class="fn">println</span>(<span class="str">"Error: ${e.message}"</span>)
+    }
+}
+
+<span class="cmt">// CoroutineExceptionHandler:</span>
+<span class="kw">val</span> <span class="var">handler</span> = <span class="fn">CoroutineExceptionHandler</span> { _, <span class="var">e</span> <span class="op">-></span>
+    <span class="fn">println</span>(<span class="str">"Caught: $e"</span>)
+}
+
+<span class="fn">launch</span>(<span class="var">handler</span>) {
+    <span class="kw">throw</span> <span class="type">RuntimeException</span>(<span class="str">"Kuch toot gaya"</span>)
+}
+
+<span class="cmt">// Cancellation:</span>
+<span class="kw">val</span> <span class="var">job</span> = <span class="fn">launch</span> { <span class="fn">longRunningTask</span>() }
+<span class="var">job</span>.<span class="fn">cancel</span>()   <span class="cmt">// cancel karo</span>
+</pre>
+    <div class="box box-tip">
+      <div class="box-label">Android Tip</div>
+      <code>viewModelScope.launch</code> use karo — ViewModel destroy hone pe automatically cancel ho jaata hai. Memory leak nahi hoti. <code>lifecycleScope</code> Fragment/Activity mein.
+    </div>
+    <div class="box box-internal">
+      <div class="box-label">Andar Kya Hota Hai?</div>
+      <code>suspend</code> function compiler state machine mein convert karta hai. Har <code>suspend</code> point ek state ban jaata hai. JVM stack frame save hoti hai, thread release hoti hai. Jab continue karna ho — state machine resume hoti hai. Yahi coroutines ka jadoo hai.
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  return false;
+}
+</script>
+</body>
+</html>
